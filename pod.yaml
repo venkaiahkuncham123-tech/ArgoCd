@@ -17,7 +17,7 @@ spec:
         purpose: test  
     spec:
        containers:
-         - image: nginx
+         - image: httpd
            revisionHistoryLimit: 1
            ports:
              - containerPort: 80
