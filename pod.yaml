@@ -5,11 +5,25 @@ metadata:
   labels:
     purpose: test
 spec:
-   contianers:
+   containers:
     - image: nginx
       ports:
         - contianerPort: 80
       name: nginx-container
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins
+  labels:
+    purpose: test
+spec:
+  containers:
+    - image: jenkins/jenkins:lts
+      ports:
+        - contianerPort: 8080
+      name: jenkins-contianer
+      
 ---
 apiVersion: v1
 kind: Service
@@ -22,5 +36,9 @@ spec:
       targetPort: 80
       protocol: TCP 
       name: nginx-front-end-port
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: jenkins-port
   selector:
     purpose: test
