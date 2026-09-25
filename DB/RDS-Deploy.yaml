@@ -30,7 +30,7 @@ kind: Secret
 metadata:
   name: ssms-secret
 data:
-  MSSQL_SA_PASSWORD: YWRtaW4jMTIzCg==
+  MSSQL_SA_PASSWORD: YWRtaW4jMTIz
 type: Opaque  
 ---
 apiVersion: batch/v1
@@ -43,7 +43,7 @@ spec:
       containers:
         - name: ssms
           image: mcr.microsoft.com/mssql/server:2019-latest
-          command: |
+          command:
             - /bin/bash
             - -c
             - |
@@ -53,20 +53,26 @@ spec:
               -P "${MSSQL_SA_PASSWORD}" \
               -C \
               -i /sql/script/init.sql
-            
           env:
             - name: MSSQL_SA_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: ssms-secret
                   key: MSSQL_SA_PASSWORD
+            - name: ACCEPT_EULA
+              valueFrom:
+                configMapKeyRef:
+                  name: ssms-config
+                  key: ACCEPT_EULA
           volumeMounts:
-            - name: scritp-volume
+            - name: script-volume
               mountPath: /sql/script
       volumes:
-        - name: scritp-volume
+        - name: script-volume
           configMap:
             name: ssms-config
+      restartPolicy: Never
+       
 ---
 apiVersion: v1
 kind: Service
