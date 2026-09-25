@@ -4,26 +4,26 @@ metadata:
   name: ssms-config
 data:
   ACCEPT_EULA: "Y"
-  MSSQL_PID: "Express"  
+  MSSQL_PID: "Express"
   init.sql: |
-IF DB_ID('mydb') IS NULL
-BEGIN
-    CREATE DATABASE mydb;
-END
-GO
+    IF DB_ID('mydb') IS NULL
+    BEGIN
+        CREATE DATABASE mydb;
+    END
+    GO
 
-USE mydb;
-GO
+    USE mydb;
+    GO
 
-IF OBJECT_ID('dbo.employees', 'U') IS NULL
-BEGIN
-    CREATE TABLE dbo.employees (
-        id INT IDENTITY(1,1) PRIMARY KEY,
-        name NVARCHAR(100),
-        created_date DATETIME DEFAULT GETDATE()
-    );
-END
-GO
+    IF OBJECT_ID('dbo.employees', 'U') IS NULL
+    BEGIN
+        CREATE TABLE dbo.employees (
+            id INT IDENTITY(1,1) PRIMARY KEY,
+            name NVARCHAR(100),
+            created_date DATETIME DEFAULT GETDATE()
+        );
+    END
+    GO
 ---
 apiVersion: v1
 kind: Secret
